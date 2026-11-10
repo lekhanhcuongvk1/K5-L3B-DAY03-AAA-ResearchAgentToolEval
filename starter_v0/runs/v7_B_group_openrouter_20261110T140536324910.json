@@ -1,0 +1,948 @@
+{
+  "run_id": "v7_B_group_openrouter_20261110T140536324910",
+  "version": "v7",
+  "artifact_version": "v7+p128029744f3e+t136081901d44",
+  "prompt_hash": "128029744f3e7fcf5953fe5a993008a1f4ee1d9c2014ede56b02390c5808a21a",
+  "tools_hash": "136081901d44a8f8fbe88af9554a44d5091375c13f4dad449c4f0a7d8f127319",
+  "phase": "B",
+  "suite": "group",
+  "provider": "openrouter",
+  "model": "openai/gpt-4o-mini",
+  "system_prompt": "/mnt/d/AI20K/day03/K5-L3B-DAY03-AAA-ResearchAgentToolEval/starter_v0/artifacts/system_prompt.md",
+  "tools": "/mnt/d/AI20K/day03/K5-L3B-DAY03-AAA-ResearchAgentToolEval/starter_v0/artifacts/tools.yaml",
+  "eval_cases": "data/eval_group.json",
+  "dataset_id": "day03_v2_research_group",
+  "dataset_role": "group",
+  "description": "Case do NHÓM tự viết thêm để cover thêm trường hợp. Mỗi case cần: id, phase='B', query HOẶC turns, failure_type (thuộc allowed_failure_types), và expect (tool_calls[...] hoặc no_tool=true). Nên kèm metadata.what_it_tests.",
+  "generated_at": "2026-11-10T14:05:36",
+  "summary": {
+    "total_cases": 10,
+    "measured_cases": 10,
+    "provider_error_cases": 0,
+    "passed_cases": 9,
+    "case_accuracy": 0.9,
+    "tool_routing_accuracy": 0.9,
+    "argument_accuracy": 0.9,
+    "multiturn_accuracy": 1.0,
+    "failure_counts": {
+      "wrong_boundary": 1
+    },
+    "observed_mismatch_counts": {
+      "extra_tool_call": 1
+    }
+  },
+  "results": [
+    {
+      "id": "G01_handle_with_at_sign",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "arg_handle_strip_at",
+        "difficulty": "easy",
+        "what_it_tests": "User viết handle kèm @ → screenname phải bỏ @ (AndrewYNg), limit=4."
+      },
+      "input": "Lấy 4 tweet mới nhất của @AndrewYNg",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "AndrewYNg",
+              "limit": 4
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "AndrewYNg",
+              "limit": 4
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "timeline",
+          "args": {
+            "screenname": "AndrewYNg",
+            "limit": 4
+          },
+          "result": {
+            "tool": "get_user_tweets",
+            "screenname": "AndrewYNg",
+            "items": [
+              {
+                "title": "Join me and 2000 other AI engineers and builders at AI Dev in New York City, Nov 30-Dec 1!",
+                "summary": "Join me and 2000 other AI engineers and builders at AI Dev in New York City, Nov 30-Dec 1!\n\nA LinkedIn study found that over July-September, the job title AI Engineer has been one of the 10 fastest-growing occupations in seven major economies. AI engineering has become a core skill for all software work, and AI Dev is designed to help you develop it.\n\nOur sessions give you hands-on practice with:\n- Coding agents and harness design: Harness tuning, repository context, autonomous coding\n- Agent memory and knowledge graphs: GraphRAG, vector search, persistent memory, hybrid retrieval\n- Agents in production: Evals, observability, simulated testing, browser and voice agents\n\n@ylecun and I will also talk about what’s next in world models and physical AI.\n\nI hope to see you there!\n\nTickets: https://t.co/i4bQevDG4i",
+                "url": "https://x.com/AndrewYNg/status/2118069849142558737",
+                "source": "@AndrewYNg",
+                "date": "Wed Nov 04 19:56:18 +0000 2026",
+                "metrics": {
+                  "favorites": 345,
+                  "retweets": 35,
+                  "views": "70718"
+                }
+              },
+              {
+                "title": "Workera is being acquired by Pearson! It's been a privilege to support CEO @kiankatan and the whole Workera team through",
+                "summary": "Workera is being acquired by Pearson! It's been a privilege to support CEO @kiankatan and the whole Workera team through this journey. Back in 2019, Kian had the insight that rigorous skills measurements would be important. With recent advances in AI, this is now more true than ever. Workera's technologies for rigorously measuring people's skills in different tasks and job roles are helping many businesses understand where their employees are strong and where there are areas for development. \n\nWith Workera and Pearson combining forces, I'm delighted that under @omarabbosh and Kian's leadership. Workera now has the potential to support an even larger number of people and businesses. Thank you, Kian and the Workera team for having me serve as the company's chairman, for launching Workera out of https://t.co/zpIxRSuky4 and AI Fund, for your friendship over the years, and for your important work advancing assessments.",
+                "url": "https://x.com/AndrewYNg/status/2104967263757713432",
+                "source": "@AndrewYNg",
+                "date": "Tue Sep 29 16:11:18 +0000 2026",
+                "metrics": {
+                  "favorites": 282,
+                  "retweets": 25,
+                  "views": "125660"
+                }
+              },
+              {
+                "title": "The OpenAI-Hugging Face hack was enabled by weak sandboxing. It is great that Nvidia is releasing open source tools for ",
+                "summary": "The OpenAI-Hugging Face hack was enabled by weak sandboxing. It is great that Nvidia is releasing open source tools for sandboxing AI agents. OpenWorker, our open-source agent harness supporting cybersecurity workflows, is proud to support this.\n\nA sandbox gives an agent limited permissions. OpenWorker is building on Nvidia OpenShell and will support running each agent's commands inside a sandbox. Only the files relevant to the task go in. Secret API keys, your web browser login credentials, the ability to access arbitrary websites, are inaccessible to the agent by default. These restrictions are implemented in deterministic code rather than by prompting an LLM, which can make mistakes or be susceptible to prompt injections. Further, all actions are logged for monitoring and audit.\n\nI'm grateful for @JensenHuang's leadership making AI agents more secure. OpenWorker (which @rohitcprasad and I are working on) will continue to improve security for agents.",
+                "url": "https://x.com/AndrewYNg/status/2104660347730969087",
+                "source": "@AndrewYNg",
+                "date": "Mon Sep 28 19:51:44 +0000 2026",
+                "metrics": {
+                  "favorites": 2955,
+                  "retweets": 385,
+                  "views": "261765"
+                }
+              },
+              {
+                "title": "RT @elonmusk: Interesting perspective",
+                "summary": "RT @elonmusk: Interesting perspective",
+                "url": "https://x.com/AndrewYNg/status/2102452386698817972",
+                "source": "@AndrewYNg",
+                "date": "Tue Sep 22 17:38:05 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 1290,
+                  "views": "5996"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "G02_doi_metadata_routing",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "routing_new_tool_doi_lookup",
+        "difficulty": "medium",
+        "what_it_tests": "Tool mới: có DOI cụ thể và cần metadata → doi_lookup; không dùng papers, lookup hay fetch."
+      },
+      "input": "Tra giúp mình tiêu đề, tác giả và năm xuất bản của bài có DOI 10.1038/nphys1170",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "doi_lookup",
+            "args": {
+              "doi": "10.1038/nphys1170"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "doi_lookup",
+            "args": {
+              "doi": "10.1038/nphys1170"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "doi_lookup",
+          "args": {
+            "doi": "10.1038/nphys1170"
+          },
+          "result": {
+            "tool": "doi_lookup",
+            "doi": "10.1038/nphys1170",
+            "items": [
+              {
+                "doi": "10.1038/nphys1170",
+                "title": "Measured measurement",
+                "authors": [
+                  "Markus Aspelmeyer"
+                ],
+                "publisher": "Springer Science and Business Media LLC",
+                "year": 2009,
+                "url": "https://doi.org/10.1038/nphys1170",
+                "source": "crossref.org"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "G03_hn_recent_discussion",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "routing_new_tool_hn_search",
+        "difficulty": "medium",
+        "what_it_tests": "Tool mới: thảo luận trên Hacker News → hn_search (không phải social_search/lookup); 'gần đây' → sort=date; query chỉ giữ từ khóa chủ đề."
+      },
+      "input": "Dân lập trình trên Hacker News gần đây đang bàn gì về Rust?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "hn_search",
+            "args": {
+              "query": "Rust",
+              "sort": "date"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "hn_search",
+            "args": {
+              "query": "Rust",
+              "sort": "date",
+              "limit": 5
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "hn_search",
+          "args": {
+            "query": "Rust",
+            "sort": "date",
+            "limit": 5
+          },
+          "result": {
+            "tool": "hn_search",
+            "query": "Rust",
+            "sort": "date",
+            "items": [
+              {
+                "title": "Show HN: Taskman – open-source, Rust TUI to manage many Claude/Codex sessions",
+                "url": "https://github.com/sanagnos/taskman",
+                "discussion_url": "https://news.ycombinator.com/item?id=50440427",
+                "source": "news.ycombinator.com",
+                "summary": "1 points, 0 comments, by subparsec",
+                "date": "2026-11-10T13:56:35Z",
+                "metrics": {
+                  "points": 1,
+                  "comments": 0
+                }
+              },
+              {
+                "title": "Show HN: A Hacker's Web Browser – Any Site to API (Open-Source)",
+                "url": "https://github.com/realsirjoe/relinos",
+                "discussion_url": "https://news.ycombinator.com/item?id=50440317",
+                "source": "news.ycombinator.com",
+                "summary": "2 points, 0 comments, by realsirjoe",
+                "date": "2026-11-10T13:49:15Z",
+                "metrics": {
+                  "points": 2,
+                  "comments": 0
+                }
+              },
+              {
+                "title": "Show HN: Usul – Express neural networks as raw math in C++23",
+                "url": "https://github.com/crushr3sist/Usul-cpp",
+                "discussion_url": "https://news.ycombinator.com/item?id=50440232",
+                "source": "news.ycombinator.com",
+                "summary": "2 points, 1 comments, by ronny2fresh",
+                "date": "2026-11-10T13:43:38Z",
+                "metrics": {
+                  "points": 2,
+                  "comments": 1
+                }
+              },
+              {
+                "title": "Show HN: View Markdown like you would on GitHub/Obsidian, right in your terminal",
+                "url": "https://mddog.pages.dev",
+                "discussion_url": "https://news.ycombinator.com/item?id=50439967",
+                "source": "news.ycombinator.com",
+                "summary": "1 points, 0 comments, by qu8n",
+                "date": "2026-11-10T13:25:13Z",
+                "metrics": {
+                  "points": 1,
+                  "comments": 0
+                }
+              },
+              {
+                "title": "Claude Opus was too talkative, so I've built a custom summary rendering layer",
+                "url": "https://i.imgur.com/HP3WE6q.png",
+                "discussion_url": "https://news.ycombinator.com/item?id=50439859",
+                "source": "news.ycombinator.com",
+                "summary": "1 points, 1 comments, by szymeo",
+                "date": "2026-11-10T13:15:17Z",
+                "metrics": {
+                  "points": 1,
+                  "comments": 1
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "G04_draft_without_posting",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "draft_vs_publish_boundary",
+        "difficulty": "medium",
+        "what_it_tests": "Soạn nháp không cần xác nhận → chỉ tìm tin; KHÔNG gọi send và KHÔNG hỏi xác nhận đăng (external-publishing-policy: drafts can be prepared without approval)."
+      },
+      "input": "Soạn nháp bản tin về Gemini trong tuần này, chỉ soạn thôi, đừng đăng lên đâu cả",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "Gemini",
+              "topic": "news",
+              "timeframe": "week"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "routing_correct": false,
+        "args_correct": false,
+        "actual_tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "Gemini",
+              "topic": "news",
+              "timeframe": "week",
+              "max_results": 5
+            }
+          },
+          {
+            "name": "social_search",
+            "args": {
+              "query": "Gemini",
+              "search_type": "Latest",
+              "limit": 5
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": "extra_tool_call",
+        "failure_type": "wrong_boundary",
+        "failures": [
+          "extra tool call social_search"
+        ]
+      },
+      "tool_results": [
+        {
+          "tool": "lookup",
+          "args": {
+            "query": "Gemini",
+            "topic": "news",
+            "timeframe": "week",
+            "max_results": 5
+          },
+          "result": {
+            "tool": "web_search",
+            "query": "Gemini",
+            "topic": "news",
+            "timeframe": "week",
+            "items": [
+              {
+                "title": "Google’s Gemini-powered Home Speaker is already on sale for 20 percent off | The Verge",
+                "url": "https://www.theverge.com/gadgets/1025498/google-home-smart-speaker-holiday-2026-deal-sale",
+                "source": "theverge.com",
+                "summary": "One of its most notable features is support for Gemini, which is also available on older Google speakers and is much better at understanding natural language and complex requests than the old Google Assistant. In her testing, Tuohy found it could handle multiple smart home commands at once and respond to conversational requests, like turning down the air conditioner when she mentioned feeling too hot. It’s also particularly impressive at answering general knowledge questions, though it can be [...] though it can be slow and unreliable at times. Keep in mind, too, that some features require a $10-a-month Google Home Premium subscription, including Gemini Live, which lets you have extended conversations with the assistant without repeating the wake word. [...] In her review, my colleague Jennifer Pattison Tuohy noted that Google’s new Home Speaker offers a nice balance of sound quality, size, and design. It’s smaller than the prior-gen Nest Audio, making it easy to place anywhere in your home. However, despite its small size, it produces loud, clear audio with 360-degree sound. Our own David Pierce even found it sounded cleaner, louder, and sharper than Amazon’s similarly priced Echo Dot Max, though Tuohy preferred the latter’s fuller sound and",
+                "score": 0.4959723
+              },
+              {
+                "title": "Gemini Omni 1.2 Flash: Fast and cost-effective with longer clips",
+                "url": "https://blog.google/innovation-and-ai/technology/developers-tools/introducing-gemini-omni-1-2-flash",
+                "source": "blog.google",
+                "summary": "We’re rolling out Gemini Omni 1.2 Flash, which offers native 15-second video creation, improved reference adherence, and multi-turn conversational editing. This update lowers costs by 30% and provides better consistency for your professional projects. You can start using these capabilities today across the Gemini API, Google Vids, and Gemini for business to produce high-quality video content at scale.\n\n Summaries were generated by Google AI. Generative AI is experimental. [...] For developers using the Gemini API: Prototype in Google AI Studio, explore interactive starter apps, and check out the developer documentation and pricing.\n   For businesses: Try it in the Google Cloud console, and build enterprise solutions with the API. [...] Businesses, startups, and creatives are already using Gemini Omni 1.2 Flash in their workflows. And for the first time, Gemini Omni is now generally available, backed by Google Cloud’s enterprise-grade infrastructure and security. Provisioned Throughput is available, and outputs carry an imperceptible SynthID watermark.",
+                "score": 0.4560954
+              },
+              {
+                "title": "I replaced Google Keep with Gemini; it's been a game changer for my notes",
+                "url": "https://www.androidpolice.com/i-replaced-google-keep-with-gemini-its-been-a-game-changer",
+                "source": "androidpolice.com",
+                "summary": "A Gemini prompt can show you all the sources in your notebook on a particular topic. For example, if you have several notes on a specific topic, you can write a prompt in Gemini to show all sources related to the subject.\n\nIf I feel the notebook needs changes, I can edit it with a prompt. I can also delete a notebook without opening Gemini Notebook.\n\nYou can still create and edit Keep notes in Gemini, but the notes aren't nearly as powerful as the ones in Gemini Notebook. [...] For example, after creating a notebook, you can generate an AI video on that topic or turn the notes into a podcast that you can listen to on your commute. You can also create quizzes, mind maps, and Slide Decks.\n\nThis is possible because Google recently added the @Gemini Notebook connector to Gemini. You can use the Gemini Notebook connector to create, edit, and retrieve information from an existing notebook. [...] For the kind of notes I take, Gemini Notebook has always been a better fit. But before the connector support, it wasn't as easy to get started with the standalone Gemini Notebook web client or app, since you had to do everything manually.\n\nThe Gemini Notebook connector in Gemini eliminated that obstacle, and it has been a game changer for my notes.",
+                "score": 0.43885794
+              },
+              {
+                "title": "Google Gemini app rolling out your ‘Memory summary’",
+                "url": "https://9to5google.com/2026/11/09/google-gemini-memory-summary",
+                "source": "9to5google.com",
+                "summary": "Officially, this feature is available for Google AI subscribers in US English with Keep Activity and Memory enabled. We’re not seeing this rolled out on Android or iOS yet, but the experience should be similar.\n\n## More on Gemini app:\n\n Google announces Gemini 4 Carbon with ‘significant gains across coding and agentic tasks’\n Latest Gemini design comes to all Android devices, app upgrades file generation\n Google adding more Connected Apps to Gemini & Search with new dev platform [...] Go to the 9to5Google home page\n\n Apps & Updates\n Gemini\n Gemini app\n\n# Google Gemini rolling out ‘Memory summary’ with everything it remembers about you\n\nAvatar for Abner Li  Abner Li | Nov 9 2026 - 8:47 am PT\n\n4 Comments\n\n \n\nGoogle Gemini now offers a “Memory summary” to “view, edit, and delete what Gemini Apps understands about you.”\n\nOn the web, you can access this new experience from Settings > Personal Intelligence (or gemini.google.com/personalization-settings). [...] To add info: “Add to my memory that I speak Japanese.”\n To remove info: “Remove my old phone number from your memory.”\n\nGoogle says “Gemini may ask follow-up questions if your request is ambiguous to ensure your summary remains accurate.”\n\nThe pencil icon in the top-right corner lets you make broader edits. In the three-dot overflow menu, you’ll find “Memory history” to see “when specific information was added or modified.”",
+                "score": 0.3615484
+              },
+              {
+                "title": "Cost per task: Using cheap classifiers to route across Gemini models and thinking levels - Google Developers Blog",
+                "url": "https://developers.googleblog.com/cost-per-task-using-cheap-classifiers-to-route-across-gemini-models-and-thinking-levels",
+                "source": "developers.googleblog.com",
+                "summary": "Match the model to the workload. Gemini 3.1 Pro is built for deep, multi-step reasoning, and it brings that same depth to every request, including short lookups that don't need it. For a workload made mostly of quick checks and extractions, a Flash configuration is the better fit, and Pro is best saved for the tasks that need its reasoning depth. Model configurations can also apply different safety settings to security-related prompts. In our run, the Pro configuration declined two short",
+                "score": 0.3317045
+              }
+            ]
+          }
+        },
+        {
+          "tool": "social_search",
+          "args": {
+            "query": "Gemini",
+            "search_type": "Latest",
+            "limit": 5
+          },
+          "result": {
+            "tool": "search_tweets",
+            "query": "Gemini",
+            "search_type": "Latest",
+            "items": [
+              {
+                "title": "⚡ Pre-Market News",
+                "summary": "⚡ Pre-Market News\n\n🔹 $MWC — Micware reports fiscal Q2/H1 2027 results with highlights and guidance for the period\n\n🔹 $GDRX — GoodRx integrates prescription pricing intelligence into Google Cloud’s Gemini for healthcare analytics\n\n🔹 $MRLN — Merlin awarded $8.9M task order to advance USSOCOM C-130J autonomy program from design into integration\n\n🔹 $PARA — Parabolic Technologies announces $11.6M debt paydown eliminating all secured debt\n\n📊 Follow @mtm_trader for real-time news & daily trade alerts!",
+                "url": "https://x.com/mtm_trader/status/2120155830184018047",
+                "source": "@mtm_trader",
+                "date": "Tue Nov 10 14:05:15 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 0,
+                  "views": null
+                }
+              },
+              {
+                "title": "Anthropic set a $70 to $78 IPO price range for 825 million shares, with a Nasdaq listing planned as ticker ANT.",
+                "summary": "Anthropic set a $70 to $78 IPO price range for 825 million shares, with a Nasdaq listing planned as ticker ANT.\n\nSo we asked ChatGPT, Claude and Gemini for the 10 best AI chatbots. Claude made #2; #1 went to ChatGPT.\n\nAgree? #Anthropic #tech\nhttps://t.co/ARRmzwXaoD",
+                "url": "https://x.com/ClankerLists/status/2120155789780222030",
+                "source": "@ClankerLists",
+                "date": "Tue Nov 10 14:05:05 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 0,
+                  "views": "2"
+                }
+              },
+              {
+                "title": "╰☆ Gemini Norawit",
+                "summary": "╰☆ Gemini Norawit\n\n#Gemini_NT #เจมีไนน์นรวิชญ์ @gemini_ti https://t.co/58mhDE7YLV",
+                "url": "https://x.com/GemFourthPics/status/2120155788719038466",
+                "source": "@GemFourthPics",
+                "date": "Tue Nov 10 14:05:05 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 0,
+                  "views": "12"
+                }
+              },
+              {
+                "title": "多分俺だけではないと思うんだけど、VIVANTを見始めてから、GeminiやChatGPTを使うと、回答の文章が脳内で「AIハヤト」の音声で再生されるんだけど、きっと俺だけじゃないよね？",
+                "summary": "多分俺だけではないと思うんだけど、VIVANTを見始めてから、GeminiやChatGPTを使うと、回答の文章が脳内で「AIハヤト」の音声で再生されるんだけど、きっと俺だけじゃないよね？\nそれかドラムのスマホで再生される方います？（笑）",
+                "url": "https://x.com/Haruto200505/status/2120155773888287062",
+                "source": "@Haruto200505",
+                "date": "Tue Nov 10 14:05:01 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 0,
+                  "views": null
+                }
+              },
+              {
+                "title": "The post: https://t.co/V54G2L9sDi",
+                "summary": "The post: https://t.co/V54G2L9sDi",
+                "url": "https://x.com/pogosikas/status/2120155746906042441",
+                "source": "@pogosikas",
+                "date": "Tue Nov 10 14:04:55 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 0,
+                  "views": "3"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "G05_missing_topic_for_search",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "clarify_missing_topic",
+        "difficulty": "medium",
+        "what_it_tests": "Muốn tìm tweet nhưng không có chủ đề (social_search bắt buộc query) → clarify hỏi chủ đề, không tự bịa từ khóa."
+      },
+      "input": "Tìm giúp mình mấy tweet đang hot nhất",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "text"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "question": "Bạn muốn tìm tweet hot nhất về chủ đề gì?",
+              "response_type": "text"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "missing_info",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "clarify",
+          "args": {
+            "question": "Bạn muốn tìm tweet hot nhất về chủ đề gì?",
+            "response_type": "text"
+          },
+          "result": {
+            "tool": "ask_user",
+            "question": "Bạn muốn tìm tweet hot nhất về chủ đề gì?",
+            "response_type": "text",
+            "options": [],
+            "awaiting_user": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "G06_user_declines_posting",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_decline_send",
+        "difficulty": "medium",
+        "what_it_tests": "User từ chối ở bước xác nhận → KHÔNG gọi send (kể cả confirmed=false) và không gọi tool nào khác."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tổng hợp tin AI hôm nay rồi đăng lên Telegram giúp mình"
+        },
+        {
+          "role": "assistant",
+          "content": "Mình đã soạn bản tin gồm 3 tin AI nổi bật hôm nay. Bạn xác nhận đăng đúng nội dung này lên Telegram không?"
+        },
+        {
+          "role": "user",
+          "content": "Khoan đã, đừng đăng, để mình đọc lại trước"
+        }
+      ],
+      "expect": {
+        "no_tool": true,
+        "behavior": "answer_without_tool"
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [],
+        "actual_text": "Được rồi, mình sẽ không đăng bản tin lên Telegram. Bạn có thể đọc lại nội dung và cho mình biết nếu cần chỉnh sửa hoặc xác nhận đăng sau nhé!",
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "G07_clarify_then_fill_topic",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_fill_topic_carry_search_type",
+        "difficulty": "hard",
+        "what_it_tests": "Sau clarify, điền query=Mistral từ lượt cuối và carry 'phổ biến nhất' → search_type=Top từ lượt đầu."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tìm tweet phổ biến nhất giúp mình"
+        },
+        {
+          "role": "assistant",
+          "content": "Bạn muốn tìm tweet về chủ đề nào?"
+        },
+        {
+          "role": "user",
+          "content": "Về Mistral nhé"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "social_search",
+            "args": {
+              "query": "Mistral",
+              "search_type": "Top"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "social_search",
+            "args": {
+              "query": "Mistral",
+              "search_type": "Top",
+              "limit": 5
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "missing_info",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "social_search",
+          "args": {
+            "query": "Mistral",
+            "search_type": "Top",
+            "limit": 5
+          },
+          "result": {
+            "tool": "search_tweets",
+            "query": "Mistral",
+            "search_type": "Top",
+            "items": [
+              {
+                "title": "Today marks a major step for Mistral: we’re announcing a €3B Series D, the largest equity round ever raised by a Europea",
+                "summary": "Today marks a major step for Mistral: we’re announcing a €3B Series D, the largest equity round ever raised by a European tech company, just three years after launch. https://t.co/5AexUxyrZM",
+                "url": "https://x.com/MistralAI/status/2097188835897586083",
+                "source": "@MistralAI",
+                "date": "Tue Sep 08 05:02:37 +0000 2026",
+                "metrics": {
+                  "favorites": 5388,
+                  "retweets": 522,
+                  "views": "1859484"
+                }
+              },
+              {
+                "title": "NVIDIA QUIETLY DROPPED A $249 BOX THAT REPLACES YOUR $200/MONTH OPENAI SUBSCRIPTION WITH $2 IN ELECTRICITY",
+                "summary": "NVIDIA QUIETLY DROPPED A $249 BOX THAT REPLACES YOUR $200/MONTH OPENAI SUBSCRIPTION WITH $2 IN ELECTRICITY\n\nit's called the jetson orin nano super. smaller than a wallet, runs at 25 watts, does 70 trillion ai operations per second. runs llama 3, mistral, gemma and deepseek locally with no api fees and no data leaving your house\n\na developer running automations and coding assistants pays $200 a month to openai. the same workload on this box costs $2 a month in electricity and breaks even in 10 weeks\n\ninstall ollama with one command. change one line in your code. point it at localhost instead of openai. everything else works identically\n\n7 billion parameter models handle 80% of what people use chatgpt for. summarization, drafting, coding, document q&a, automation pipelines. total monthly cost drops from $200 to $22\n\ncloud subscriptions keep getting more expensive and rate limits keep getting tighter. the people who set this up in 2025 are going to look very smart in 2027\n\nbookmark this and read the article below",
+                "url": "https://x.com/starmexxx/status/2059581750334922923",
+                "source": "@starmexxx",
+                "date": "Wed May 27 10:25:29 +0000 2026",
+                "metrics": {
+                  "favorites": 5346,
+                  "retweets": 835,
+                  "views": "2361527"
+                }
+              },
+              {
+                "title": "Random German lab appears from nowhere and drops SOTA open-weight model",
+                "summary": "Random German lab appears from nowhere and drops SOTA open-weight model\n\nBeats Qwen, Mistral, Nematron models with similar active parameter count\n\nTrained from stratch https://t.co/2xY0qylFxa",
+                "url": "https://x.com/charles_maddock/status/2106872045489488183",
+                "source": "@charles_maddock",
+                "date": "Sun Oct 04 22:20:14 +0000 2026",
+                "metrics": {
+                  "favorites": 9288,
+                  "retweets": 396,
+                  "views": "705064"
+                }
+              },
+              {
+                "title": "holy sh*t, someone just mapped 51,000+ paid AI apps you can reverse engineer today",
+                "summary": "holy sh*t, someone just mapped 51,000+ paid AI apps you can reverse engineer today\n\nchatbots, writing tools, coding assistants and image apps, and most builders have no idea it’s free\n\nthe drop:\n\n→ https://t.co/ncVBRjHC5s (51,000+ AI tools · 9,000+ companies)\n\nthe index itself: every AI app you can pick from, the list of wrappers worth looking inside\n\n→ https://t.co/baOMltBY3H (143.9k ★ · 34.8k forks)\n\nsystem prompts, internal tools and model info from Cursor, Claude Code, Devin, Windsurf, Replit, Lovable and Perplexity\n\n→ https://t.co/0YeHDC94pb (62.7k ★ · 10.3k forks)\n\npublicly extracted prompts from Anthropic, OpenAI, Google, xAI, Microsoft, Perplexity, Meta, Mistral, DeepSeek and Cursor\n\n→ https://t.co/A0l27CsZj5 (51.6k ★ · 10.5k forks)\n\nextracted instructions of ChatGPT, Claude, Gemini, Grok and Perplexity\n\n→ https://t.co/tnCGt4DQvc (15.0k ★ · 2.1k forks)\n\na collection of leaked system prompts from widely used AI services\n\n→ https://t.co/ZPASKmw583 (116 prompts · 33 companies)\n\nthe same kind of collection, readable in your browser\n\n→ https://t.co/UtPYOBM1aY\n\nthe formula:\n\npick an AI tool you pay for → read its public prompt → let REA show what it really calls → rebuild it or stop paying",
+                "url": "https://x.com/Gyome1_/status/2116500721751216350",
+                "source": "@Gyome1_",
+                "date": "Sat Oct 31 12:01:09 +0000 2026",
+                "metrics": {
+                  "favorites": 719,
+                  "retweets": 115,
+                  "views": "32995"
+                }
+              },
+              {
+                "title": "8 AI APIS STILL GIVE YOU $0 ACCESS WITH NO CARD. THIS IS THE STACK I WOULD START A BOT ON",
+                "summary": "8 AI APIS STILL GIVE YOU $0 ACCESS WITH NO CARD. THIS IS THE STACK I WOULD START A BOT ON\n\nQuotas taken from each providers own docs on October 22\n\nGroq: 1,000 requests and 200K tokens a day on gpt-oss-120b\nGemini API: free tier on the Flash models, Flash-Lite and 2.5 Pro\nOpenRouter: 18 models ending in :free, 50 requests a day\nCloudflare Workers AI: 10,000 Neurons a day, resets daily\nCohere: 1,000 calls a month on the trial key\nMistral, NVIDIA and SambaNova close the list\n\nAll 8 speak the same OpenAI format. One client, swap two lines, and when one throws a 429 your code just falls to the next one\n\nTwo things people miss. Gemini free tier can use your prompts to improve their products, so nothing private there. And GitHub Models was retired on July 30, stop recommending it\n\nWhats in your free stack?",
+                "url": "https://x.com/0xAIlabs/status/2119385339684901310",
+                "source": "@0xAIlabs",
+                "date": "Sun Nov 08 11:03:35 +0000 2026",
+                "metrics": {
+                  "favorites": 37,
+                  "retweets": 1,
+                  "views": "970"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "G08_switch_news_to_concept",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "routing_new_tool_wiki_summary",
+        "difficulty": "hard",
+        "what_it_tests": "Tool mới: lượt cuối đổi từ hỏi tin tức sang hỏi khái niệm → wiki_summary, không gọi lookup. Chỉ kiểm tên tool vì query/lang có nhiều cách viết hợp lý."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tin tức về Mixture of Experts tuần này có gì mới?"
+        },
+        {
+          "role": "user",
+          "content": "Khoan, trước hết giải thích cho mình Mixture of Experts là gì đã, chưa cần tin tức"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "wiki_summary",
+            "args": {}
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "wiki_summary",
+            "args": {
+              "query": "Mixture of Experts"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "wiki_summary",
+          "args": {
+            "query": "Mixture of Experts"
+          },
+          "result": {
+            "tool": "wiki_summary",
+            "query": "Mixture of Experts",
+            "lang": "en",
+            "items": [
+              {
+                "title": "Mixture of experts",
+                "url": "https://en.wikipedia.org/wiki/Mixture_of_experts",
+                "source": "en.wikipedia.org",
+                "summary": "Mixture of experts (MoE) is a machine learning technique where multiple expert networks (learners) are used to divide a problem space into homogeneous regions. MoE represents a form of ensemble learning. They were also called committee machines."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "G09_clarify_then_github_repo",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "routing_new_tool_github_repo",
+        "difficulty": "hard",
+        "what_it_tests": "Tool mới: sau clarify, ghép tên repo ở lượt 1 với owner ở lượt 3 thành repo='huggingface/transformers' → github_repo; không dùng lookup/fetch."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Repo transformers dạo này có release mới không?"
+        },
+        {
+          "role": "assistant",
+          "content": "Bạn muốn xem repo transformers của tài khoản/tổ chức nào? Cho mình dạng owner/repo nhé."
+        },
+        {
+          "role": "user",
+          "content": "Của huggingface"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "github_repo",
+            "args": {
+              "repo": "huggingface/transformers"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "github_repo",
+            "args": {
+              "repo": "huggingface/transformers"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "missing_info",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "github_repo",
+          "args": {
+            "repo": "huggingface/transformers"
+          },
+          "result": {
+            "tool": "github_repo",
+            "repo": "huggingface/transformers",
+            "items": [
+              {
+                "title": "huggingface/transformers",
+                "url": "https://github.com/huggingface/transformers",
+                "source": "github.com",
+                "summary": "🤗 Transformers: the model-definition framework for state-of-the-art machine learning models in text, vision, audio, and multimodal models, for both inference and training. ",
+                "language": "Python",
+                "license": "Apache-2.0",
+                "updated": "2026-11-10T13:59:17Z",
+                "archived": false,
+                "metrics": {
+                  "stars": 168735,
+                  "forks": 35156,
+                  "open_issues": 1072
+                },
+                "latest_release": {
+                  "tag": "v5.22.2",
+                  "name": "Patch release v5.22.2",
+                  "published_at": "2026-11-06T15:43:27Z",
+                  "url": "https://github.com/huggingface/transformers/releases/tag/v5.22.2"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "G10_answer_from_context_no_refetch",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_answer_from_context",
+        "difficulty": "medium",
+        "what_it_tests": "Kết quả đã có trong context → trả lời trực tiếp, KHÔNG gọi lại timeline."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Lấy 3 tweet mới nhất của tài khoản Hugging Face"
+        },
+        {
+          "role": "assistant",
+          "content": "Đây là 3 tweet mới nhất của @huggingface: (1) về một model mới trên Hub — 12k views; (2) về khóa học miễn phí — 45k views; (3) về bản cập nhật thư viện — 8k views."
+        },
+        {
+          "role": "user",
+          "content": "Trong 3 tweet đó cái nào nhiều view nhất?"
+        }
+      ],
+      "expect": {
+        "no_tool": true,
+        "behavior": "answer_without_tool"
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [],
+        "actual_text": "Tweet về khóa học miễn phí có nhiều view nhất với 45k views.",
+        "case_failure_type": "unnecessary_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    }
+  ]
+}

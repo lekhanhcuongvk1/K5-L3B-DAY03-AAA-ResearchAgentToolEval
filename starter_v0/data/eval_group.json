@@ -2,6 +2,286 @@
   "dataset_id": "day03_v2_research_group",
   "dataset_role": "group",
   "description": "Case do NHÓM tự viết thêm để cover thêm trường hợp. Mỗi case cần: id, phase='B', query HOẶC turns, failure_type (thuộc allowed_failure_types), và expect (tool_calls[...] hoặc no_tool=true). Nên kèm metadata.what_it_tests.",
-  "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
-  "cases": []
+  "allowed_failure_types": [
+    "wrong_tool",
+    "wrong_arg_value",
+    "wrong_boundary",
+    "unnecessary_tool",
+    "out_of_scope",
+    "missing_info"
+  ],
+  "cases": [
+    {
+      "id": "G01_handle_with_at_sign",
+      "phase": "B",
+      "suite": "group",
+      "query": "Lấy 4 tweet mới nhất của @AndrewYNg",
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "AndrewYNg",
+              "limit": 4
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "arg_handle_strip_at",
+        "difficulty": "easy",
+        "what_it_tests": "User viết handle kèm @ → screenname phải bỏ @ (AndrewYNg), limit=4."
+      }
+    },
+    {
+      "id": "G02_doi_metadata_routing",
+      "phase": "B",
+      "suite": "group",
+      "query": "Tra giúp mình tiêu đề, tác giả và năm xuất bản của bài có DOI 10.1038/nphys1170",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "doi_lookup",
+            "args": {
+              "doi": "10.1038/nphys1170"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "routing_new_tool_doi_lookup",
+        "difficulty": "medium",
+        "what_it_tests": "Tool mới: có DOI cụ thể và cần metadata → doi_lookup; không dùng papers, lookup hay fetch."
+      }
+    },
+    {
+      "id": "G03_hn_recent_discussion",
+      "phase": "B",
+      "suite": "group",
+      "query": "Dân lập trình trên Hacker News gần đây đang bàn gì về Rust?",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "hn_search",
+            "args": {
+              "query": "Rust",
+              "sort": "date"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "routing_new_tool_hn_search",
+        "difficulty": "medium",
+        "what_it_tests": "Tool mới: thảo luận trên Hacker News → hn_search (không phải social_search/lookup); 'gần đây' → sort=date; query chỉ giữ từ khóa chủ đề."
+      }
+    },
+    {
+      "id": "G04_draft_without_posting",
+      "phase": "B",
+      "suite": "group",
+      "query": "Soạn nháp bản tin về Gemini trong tuần này, chỉ soạn thôi, đừng đăng lên đâu cả",
+      "failure_type": "wrong_boundary",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "Gemini",
+              "topic": "news",
+              "timeframe": "week"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "draft_vs_publish_boundary",
+        "difficulty": "medium",
+        "what_it_tests": "Soạn nháp không cần xác nhận → chỉ tìm tin; KHÔNG gọi send và KHÔNG hỏi xác nhận đăng (external-publishing-policy: drafts can be prepared without approval)."
+      }
+    },
+    {
+      "id": "G05_missing_topic_for_search",
+      "phase": "B",
+      "suite": "group",
+      "query": "Tìm giúp mình mấy tweet đang hot nhất",
+      "failure_type": "missing_info",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "text"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "clarify_missing_topic",
+        "difficulty": "medium",
+        "what_it_tests": "Muốn tìm tweet nhưng không có chủ đề (social_search bắt buộc query) → clarify hỏi chủ đề, không tự bịa từ khóa."
+      }
+    },
+    {
+      "id": "G06_user_declines_posting",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tổng hợp tin AI hôm nay rồi đăng lên Telegram giúp mình"
+        },
+        {
+          "role": "assistant",
+          "content": "Mình đã soạn bản tin gồm 3 tin AI nổi bật hôm nay. Bạn xác nhận đăng đúng nội dung này lên Telegram không?"
+        },
+        {
+          "role": "user",
+          "content": "Khoan đã, đừng đăng, để mình đọc lại trước"
+        }
+      ],
+      "failure_type": "wrong_boundary",
+      "expect": {
+        "no_tool": true,
+        "behavior": "answer_without_tool"
+      },
+      "metadata": {
+        "skill": "multiturn_decline_send",
+        "difficulty": "medium",
+        "what_it_tests": "User từ chối ở bước xác nhận → KHÔNG gọi send (kể cả confirmed=false) và không gọi tool nào khác."
+      }
+    },
+    {
+      "id": "G07_clarify_then_fill_topic",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tìm tweet phổ biến nhất giúp mình"
+        },
+        {
+          "role": "assistant",
+          "content": "Bạn muốn tìm tweet về chủ đề nào?"
+        },
+        {
+          "role": "user",
+          "content": "Về Mistral nhé"
+        }
+      ],
+      "failure_type": "missing_info",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "social_search",
+            "args": {
+              "query": "Mistral",
+              "search_type": "Top"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "multiturn_fill_topic_carry_search_type",
+        "difficulty": "hard",
+        "what_it_tests": "Sau clarify, điền query=Mistral từ lượt cuối và carry 'phổ biến nhất' → search_type=Top từ lượt đầu."
+      }
+    },
+    {
+      "id": "G08_switch_news_to_concept",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tin tức về Mixture of Experts tuần này có gì mới?"
+        },
+        {
+          "role": "user",
+          "content": "Khoan, trước hết giải thích cho mình Mixture of Experts là gì đã, chưa cần tin tức"
+        }
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "wiki_summary",
+            "args": {}
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "routing_new_tool_wiki_summary",
+        "difficulty": "hard",
+        "what_it_tests": "Tool mới: lượt cuối đổi từ hỏi tin tức sang hỏi khái niệm → wiki_summary, không gọi lookup. Chỉ kiểm tên tool vì query/lang có nhiều cách viết hợp lý."
+      }
+    },
+    {
+      "id": "G09_clarify_then_github_repo",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Repo transformers dạo này có release mới không?"
+        },
+        {
+          "role": "assistant",
+          "content": "Bạn muốn xem repo transformers của tài khoản/tổ chức nào? Cho mình dạng owner/repo nhé."
+        },
+        {
+          "role": "user",
+          "content": "Của huggingface"
+        }
+      ],
+      "failure_type": "missing_info",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "github_repo",
+            "args": {
+              "repo": "huggingface/transformers"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "routing_new_tool_github_repo",
+        "difficulty": "hard",
+        "what_it_tests": "Tool mới: sau clarify, ghép tên repo ở lượt 1 với owner ở lượt 3 thành repo='huggingface/transformers' → github_repo; không dùng lookup/fetch."
+      }
+    },
+    {
+      "id": "G10_answer_from_context_no_refetch",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Lấy 3 tweet mới nhất của tài khoản Hugging Face"
+        },
+        {
+          "role": "assistant",
+          "content": "Đây là 3 tweet mới nhất của @huggingface: (1) về một model mới trên Hub — 12k views; (2) về khóa học miễn phí — 45k views; (3) về bản cập nhật thư viện — 8k views."
+        },
+        {
+          "role": "user",
+          "content": "Trong 3 tweet đó cái nào nhiều view nhất?"
+        }
+      ],
+      "failure_type": "unnecessary_tool",
+      "expect": {
+        "no_tool": true,
+        "behavior": "answer_without_tool"
+      },
+      "metadata": {
+        "skill": "multiturn_answer_from_context",
+        "difficulty": "medium",
+        "what_it_tests": "Kết quả đã có trong context → trả lời trực tiếp, KHÔNG gọi lại timeline."
+      }
+    }
+  ]
 }

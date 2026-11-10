@@ -18,6 +18,9 @@ from .policy.tool import search_company_policy
 from .social_search.tool import search_tweets
 from .send.tool import send_telegram
 from .lookup.tool import web_search
+from .wiki_summary.tool import wiki_summary
+from .hn_search.tool import hn_search
+from .github_repo.tool import github_repo
 
 
 # NOTE (starter_v0): tool names here are intentionally vague. These keys are the
@@ -37,6 +40,9 @@ TOOL_FUNCTIONS = {
     "papers": arxiv_search,
     "paper_text": get_arxiv_paper_text,
     "doi_lookup": lookup_doi,
+    "wiki_summary": wiki_summary,
+    "hn_search": hn_search,
+    "github_repo": github_repo,
 }
 
 

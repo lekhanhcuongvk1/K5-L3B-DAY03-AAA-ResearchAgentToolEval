@@ -45,6 +45,10 @@ def _tweets_from(data: dict[str, Any], limit: int) -> list[dict[str, Any]]:
 
 def search_tweets(query: str = "", search_type: str = "Latest", limit: int = 5) -> dict[str, Any]:
     try:
+        # Regression fix (group eval G05): never send an empty query to the API; let the agent clarify instead.
+        if not isinstance(query, str) or not query.strip():
+            raise ValueError("query must be a non-empty keyword string; ask the user for the topic (clarify)")
+        query = query.strip()
         data = _twitter_get("/search.php", {"query": query, "search_type": search_type})
         return {"tool": "search_tweets", "query": query, "search_type": search_type, "items": _tweets_from(data, limit)}
     except Exception as exc:

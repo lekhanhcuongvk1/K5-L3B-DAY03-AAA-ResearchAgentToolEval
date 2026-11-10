@@ -1,0 +1,41 @@
+Regression test cho bug social_search (query rỗng vẫn gọi API)
+Lệnh: pytest -q --tb=line -p no:cacheprovider tests/test_tools_todo.py -k "social_search_empty_query or social_search_valid_query"
+
+=== TRƯỚC khi sửa: tools/social_search/tool.py lấy từ commit d2c1f57 (code starter) ===
+FFFF                                                                     [100%]
+=================================== FAILURES ===================================
+E   AssertionError: assert [{'method': '...i.com'}, ...}] == []
+      
+      Left contains one more item: {'method': 'GET', 'url': 'https://twitter-api45.p.rapidapi.com/search.php', 'params': {'query': '', 'search_type': 'Top'}, 'headers': {'x-rapidapi-key': 'test-key', 'x-rapidapi-host': 'twitter-api45.p.rapidapi.com'}, ...}
+      Use -v to get more diff
+tests/test_tools_todo.py:505: AssertionError: assert [{'method': '...i.com'}, ...}] == []
+E   AssertionError: assert [{'method': '...i.com'}, ...}] == []
+      
+      Left contains one more item: {'method': 'GET', 'url': 'https://twitter-api45.p.rapidapi.com/search.php', 'params': {'query': '   ', 'search_type': 'Top'}, 'headers': {'x-rapidapi-key': 'test-key', 'x-rapidapi-host': 'twitter-api45.p.rapidapi.com'}, ...}
+      Use -v to get more diff
+tests/test_tools_todo.py:505: AssertionError: assert [{'method': '...i.com'}, ...}] == []
+E   AssertionError: assert [{'method': '...i.com'}, ...}] == []
+      
+      Left contains one more item: {'method': 'GET', 'url': 'https://twitter-api45.p.rapidapi.com/search.php', 'params': {'query': None, 'search_type': 'Top'}, 'headers': {'x-rapidapi-key': 'test-key', 'x-rapidapi-host': 'twitter-api45.p.rapidapi.com'}, ...}
+      Use -v to get more diff
+tests/test_tools_todo.py:505: AssertionError: assert [{'method': '...i.com'}, ...}] == []
+E   AssertionError: assert {'query': '  ..._type': 'Top'} == {'query': 'Mi..._type': 'Top'}
+      
+      Omitting 1 identical items, use -vv to show
+      Differing items:
+      {'query': '  Mistral '} != {'query': 'Mistral'}
+      Use -v to get more diff
+tests/test_tools_todo.py:518: AssertionError: assert {'query': '  ..._type': 'Top'} == {'query': 'Mi..._type': 'Top'}
+=========================== short test summary info ============================
+FAILED tests/test_tools_todo.py::test_social_search_empty_query_returns_error_without_network[]
+FAILED tests/test_tools_todo.py::test_social_search_empty_query_returns_error_without_network[   ]
+FAILED tests/test_tools_todo.py::test_social_search_empty_query_returns_error_without_network[None]
+FAILED tests/test_tools_todo.py::test_social_search_valid_query_still_calls_api_with_stripped_query
+4 failed, 110 deselected in 0.07s
+
+=== SAU khi sửa: tools/social_search/tool.py hiện tại ===
+....                                                                     [100%]
+4 passed, 110 deselected in 0.03s
+
+=== Toàn bộ suite sau khi sửa ===
+182 passed, 14 skipped in 0.26s
