@@ -11,6 +11,7 @@ Rules:
 from __future__ import annotations
 
 import pytest
+import requests
 
 from conftest import FakeResponse  # noqa: F401  (you will need it)
 from tools import TOOL_FUNCTIONS  # noqa: F401
@@ -110,13 +111,96 @@ def test_policy_instruction_like_lines_go_to_untrusted_text() -> None:
 #   2. bad / missing input from the model (empty string, wrong type, out-of-enum value)
 #   3. failure path (missing key, HTTP error, timeout) -> returns error dict, does not raise
 
-def test_my_new_tool_happy_path() -> None:
-    pytest.skip(TODO)
+@pytest.mark.parametrize("doi", [
+    "10.1234/example", " 10.1234/example ", "doi: 10.1234/example",
+    "https://doi.org/10.1234/example", "http://dx.doi.org/10.1234/example",
+])
+def test_doi_lookup_sends_encoded_request_and_maps_metadata(doi, fake_http) -> None:
+    calls = fake_http(FakeResponse({"message": {
+        "DOI": "10.1234/example", "title": ["Research example"],
+        "author": [{"given": "An", "family": "Nguyen"}, {"name": "Research Group"}],
+        "publisher": "Example Publisher", "published": {"date-parts": [[2024, 3, 1]]},
+    }}))
+
+    result = TOOL_FUNCTIONS["doi_lookup"](doi=doi)
+
+    assert len(calls) == 1
+    assert calls[0]["method"] == "GET"
+    assert calls[0]["url"] == "https://api.crossref.org/works/10.1234%2Fexample"
+    assert calls[0]["headers"]["Accept"] == "application/json"
+    assert "doi_lookup" in calls[0]["headers"]["User-Agent"]
+    assert calls[0]["timeout"] == 30
+    assert result == {"tool": "doi_lookup", "doi": "10.1234/example", "items": [{
+        "doi": "10.1234/example", "title": "Research example",
+        "authors": ["An Nguyen", "Research Group"], "publisher": "Example Publisher",
+        "year": 2024, "url": "https://doi.org/10.1234/example", "source": "crossref.org",
+    }]}
 
 
-def test_my_new_tool_bad_input_from_model() -> None:
-    pytest.skip(TODO)
+@pytest.mark.parametrize("doi", ["", "  ", None, 123, {}, [], "not-a-doi", "10.1234/", "https://example.com/paper"])
+def test_doi_lookup_bad_input_returns_error_without_network(doi, fake_http) -> None:
+    calls = fake_http(FakeResponse())
+
+    result = TOOL_FUNCTIONS["doi_lookup"](doi=doi)
+
+    assert result["tool"] == "doi_lookup"
+    assert result["error"] == "ValueError"
+    assert result["message"]
+    assert calls == []
 
 
-def test_my_new_tool_failure_returns_error_dict() -> None:
-    pytest.skip(TODO)
+@pytest.mark.parametrize("status_code", [404, 429, 500])
+def test_doi_lookup_http_failure_returns_error_dict(status_code, fake_http) -> None:
+    calls = fake_http(FakeResponse(status_code=status_code))
+
+    result = TOOL_FUNCTIONS["doi_lookup"](doi="10.1234/example")
+
+    assert len(calls) == 1
+    assert result == {"tool": "doi_lookup", "error": "HTTPError", "message": f"HTTP {status_code}"}
+
+
+@pytest.mark.parametrize("exc", [requests.Timeout("timed out"), requests.ConnectionError("offline")])
+def test_doi_lookup_network_failure_returns_error_dict(exc, fake_http) -> None:
+    calls = fake_http(exc)
+
+    result = TOOL_FUNCTIONS["doi_lookup"](doi="10.1234/example")
+
+    assert len(calls) == 1
+    assert result == {"tool": "doi_lookup", "error": type(exc).__name__, "message": str(exc)}
+
+
+@pytest.mark.parametrize("payload", [
+    [], {}, {"message": []}, {"message": {}},
+    {"message": {"DOI": "10.1234/another"}},
+    {"message": {"DOI": "10.1234/example", "title": "not a list"}},
+])
+def test_doi_lookup_malformed_response_returns_error_dict(payload, fake_http) -> None:
+    calls = fake_http(FakeResponse(payload))
+
+    result = TOOL_FUNCTIONS["doi_lookup"](doi="10.1234/example")
+
+    assert len(calls) == 1
+    assert result["tool"] == "doi_lookup"
+    assert result["error"] == "ValueError"
+    assert result["message"]
+    assert "items" not in result
+
+
+def test_doi_lookup_missing_optional_metadata_returns_empty_fields(fake_http) -> None:
+    fake_http(FakeResponse({"message": {"DOI": "10.1234/example"}}))
+
+    result = TOOL_FUNCTIONS["doi_lookup"](doi="10.1234/example")
+
+    assert result["items"] == [{
+        "doi": "10.1234/example", "title": "", "authors": [], "publisher": "", "year": None,
+        "url": "https://doi.org/10.1234/example", "source": "crossref.org",
+    }]
+
+
+def test_doi_lookup_encodes_reserved_characters_in_doi(fake_http) -> None:
+    calls = fake_http(FakeResponse({"message": {"DOI": "10.1234/a?b#c"}}))
+
+    result = TOOL_FUNCTIONS["doi_lookup"](doi="https://doi.org/10.1234/a%3Fb%23c")
+
+    assert calls[0]["url"] == "https://api.crossref.org/works/10.1234%2Fa%3Fb%23c"
+    assert result["items"][0]["url"] == "https://doi.org/10.1234/a%3Fb%23c"

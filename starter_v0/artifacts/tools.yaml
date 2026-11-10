@@ -123,3 +123,12 @@ tools:
         max_pages: {type: integer, default: 5, description: "Số trang tối đa cần trích xuất"}
         max_chars: {type: integer, default: 8000, description: "Số ký tự tối đa"}
       required: [arxiv_url]
+
+  # ---------------- Team tool (CP3) ----------------
+  - name: doi_lookup
+    description: "Tra metadata bài báo trên Crossref khi user cung cấp DOI cụ thể và cần tiêu đề, tác giả, nhà xuất bản hoặc năm xuất bản. Nhận DOI thuần, tiền tố doi: hoặc URL doi.org. KHÔNG dùng để tìm paper theo từ khóa (papers), đọc toàn văn arXiv (paper_text) hoặc đọc URL web thông thường (fetch). Nếu thiếu DOI, dùng clarify hỏi lại; không tự đoán."
+    parameters:
+      type: object
+      properties:
+        doi: {type: string, default: "", description: "DOI cụ thể, ví dụ '10.1038/nphys1170' hoặc 'https://doi.org/10.1038/nphys1170'; không truyền từ khóa hay URL web thông thường"}
+      required: [doi]

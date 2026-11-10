@@ -101,11 +101,11 @@ Lấy từ `starter_v0/transcripts/*.transcript.json`.
 
 | Item | Evidence File | What Worked | Risk / Guardrail |
 |---|---|---|---|
-| Tool mới (`tools/<tên>/`) |  |  |  |
-| Unit test tool mới (≥ 3 test/tool) | `pytest` output (0 failed) |  |  |
+| Tool mới (`tools/<tên>/`) | [tools/doi_lookup/](../../starter_v0/tools/doi_lookup/) (`tool.py`, `TOOL.md`); đăng ký trong `tools/__init__.py` và `artifacts/tools.yaml` | `doi_lookup` tra metadata bài báo theo DOI qua Crossref: tiêu đề, tác giả, nhà xuất bản, năm xuất bản, URL DOI; nhận DOI thuần, tiền tố `doi:` hoặc URL doi.org | Kiểm tra input trước khi gọi mạng; encode DOI; timeout 30 giây; lỗi trả error dict, không raise; không cần API key; HTTP 404 có thể là DOI thuộc cơ quan đăng ký khác |
+| Unit test tool mới (≥ 3 test/tool) | [tests/test_tools_todo.py](../../starter_v0/tests/test_tools_todo.py); [pytest output](../../starter_v0/analysis/cp3_pytest.txt) (0 failed) | 7 hàm test với 27 trường hợp đều pass, bao phủ happy path, input xấu, HTTP 404/429/500, timeout/mất kết nối, response sai cấu trúc, metadata tùy chọn và encode DOI; toàn suite: 94 passed, 14 skipped; contract test: 60 passed | Test offline bằng `fake_http`, assert request và kết quả; 14 skip chỉ là TODO của tool có sẵn, không có test của `doi_lookup` bị skip |
 | UI (lệnh chạy + link dùng thử) |  |  |  |
 
-Tool unit tests: số test đã viết, và một ví dụ lỗi mà unit test bắt được nhưng eval không bắt được.
+Tool unit tests: viết 7 hàm test (27 trường hợp) cho `doi_lookup`. Ví dụ: model có thể gọi đúng tên tool và DOI nhưng code ghép URL không encode ký tự `?`/`#`, làm request sai; test `test_doi_lookup_encodes_reserved_characters_in_doi` kiểm tra cả URL request và URL kết quả để phát hiện lỗi này, trong khi eval routing/arguments không kiểm tra chi tiết request HTTP. Đây là tình huống test phòng ngừa, không phải bug được ghi nhận trong tool có sẵn. Các test dùng response giả; chưa dùng kết quả này để khẳng định API live hoặc model routing đã pass. Do `.venv` cũ trỏ đến Python 3.10 không còn tồn tại, kiểm tra thực tế dùng Python 3.12.11 hiện có, nạp thư viện từ `.venv/Lib/site-packages` và tắt tự nạp plugin pytest; không thay đổi dependency. Log kiểm tra được lưu riêng ở `starter_v0/analysis/cp3_pytest.txt`.
 
 ### B5. Bonus Evidence
 
