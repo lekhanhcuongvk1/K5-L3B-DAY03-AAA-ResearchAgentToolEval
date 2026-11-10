@@ -32,11 +32,9 @@ UI có hai chế độ: **Compare versions** chạy cùng input trên hai artifa
 
 **Link dùng thử (deploy):**
 
-> Dán link public để team khác mở thử ngay. Cách deploy nhanh bằng Cloudflare Tunnel xem README. Nếu deploy Vercel/Streamlit Cloud thì dán link đó.
->
-> URL:
+[Mở Research Agent UI trên Streamlit Community Cloud](https://k5-l3b-day03-aaa-researchagenttooleval-hz3tt3gyetsqvhxdkvvjot.streamlit.app/)
 
-> TODO: điền URL public sau khi deploy Streamlit.
+UI được deploy từ repository của nhóm trên Streamlit Community Cloud. API key được cấu hình bằng secrets phía server và không được đưa vào source code hoặc hiển thị trên giao diện.
 
 ### A2. Tool agent có
 
@@ -150,7 +148,7 @@ Ghi chú: lượt 2 trong transcript `v7_openrouter_20261110T235331466507.transc
 |---|---|---|---|
 | Tool mới (`tools/<tên>/`) | [tools/doi_lookup/](../../starter_v0/tools/doi_lookup/) (`tool.py`, `TOOL.md`); đăng ký trong `tools/__init__.py` và `artifacts/tools.yaml` | `doi_lookup` tra metadata bài báo theo DOI qua Crossref: tiêu đề, tác giả, nhà xuất bản, năm xuất bản, URL DOI; nhận DOI thuần, tiền tố `doi:` hoặc URL doi.org | Kiểm tra input trước khi gọi mạng; encode DOI; timeout 30 giây; lỗi trả error dict, không raise; không cần API key; HTTP 404 có thể là DOI thuộc cơ quan đăng ký khác |
 | Unit test tool mới (≥ 3 test/tool) | [tests/test_tools_todo.py](../../starter_v0/tests/test_tools_todo.py); [pytest output](../../starter_v0/analysis/pytest_full.txt) (0 failed) | 7 hàm test với 27 trường hợp cho `doi_lookup` đều pass, bao phủ happy path, input xấu, HTTP 404/429/500, timeout/mất kết nối, response sai cấu trúc, metadata tùy chọn và encode DOI; toàn suite hiện tại: **184 passed, 14 skipped, 0 failed** | Test offline bằng `fake_http`, assert request và kết quả; 14 skip chỉ là TODO của tool có sẵn, không có test của tool mới hoặc UI bị skip |
-| UI (lệnh chạy + link dùng thử) | [starter_v0/app.py](../../starter_v0/app.py); dependency tại [requirements.txt](../../starter_v0/requirements.txt); chạy `streamlit run app.py`; URL public: TODO sau deploy | Hai chế độ: so sánh lượt hiện tại giữa các artifact `v0`, `v1`, `v2`, `v3`, `v7` và chat nhiều lượt với một version; hiển thị tool trace/result/error, latency, reset và tải transcript; UI tự lưu transcript vào `starter_v0/transcripts/` | Safe demo chặn `send` kể cả model truyền `confirmed=true`; API key chỉ được load server-side từ `.env`, không render ra UI; test guardrail tại [tests/test_ui_safety.py](../../starter_v0/tests/test_ui_safety.py) |
+| UI (lệnh chạy + link dùng thử) | [starter_v0/app.py](../../starter_v0/app.py); dependency tại [requirements.txt](../../starter_v0/requirements.txt); chạy `streamlit run app.py`; [URL public trên Streamlit Community Cloud](https://k5-l3b-day03-aaa-researchagenttooleval-hz3tt3gyetsqvhxdkvvjot.streamlit.app/) | Hai chế độ: so sánh lượt hiện tại giữa các artifact `v0`, `v1`, `v2`, `v3`, `v7` và chat nhiều lượt với một version; hiển thị tool trace/result/error, latency, reset và tải transcript; UI tự lưu transcript vào `starter_v0/transcripts/` | Safe demo chặn `send` kể cả model truyền `confirmed=true`; API key được load server-side từ `.env` khi chạy local hoặc Streamlit secrets khi deploy, không render ra UI; test guardrail tại [tests/test_ui_safety.py](../../starter_v0/tests/test_ui_safety.py) |
 
 Tool unit tests: viết 7 hàm test (27 trường hợp) cho `doi_lookup`. Ví dụ: model có thể gọi đúng tên tool và DOI nhưng code ghép URL không encode ký tự `?`/`#`, làm request sai; test `test_doi_lookup_encodes_reserved_characters_in_doi` kiểm tra cả URL request và URL kết quả để phát hiện lỗi này, trong khi eval routing/arguments không kiểm tra chi tiết request HTTP. Các test dùng response giả, không gọi mạng thật. Output pytest lưu tại `starter_v0/analysis/pytest_full.txt`; kết quả chạy lại sau khi tích hợp UI là **184 passed, 14 skipped, 0 failed**.
 
