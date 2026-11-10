@@ -1,1 +1,5 @@
 version,author,changed_artifact,artifact_version,prompt_hash,tools_hash,reason,hypothesis,metric_before,metric_after,run_file
+v0,team,baseline,v0+peb1c8179815b+te69bc53ed884,eb1c8179815b,e69bc53ed884,baseline,Đo hành vi chưa tối ưu trước khi sửa,,0.65,runs/v0_B_base_openai_20261110T174318864886.json
+v1,team,system_prompt.md,v1+p0cf0f624dc03+te69bc53ed884,0cf0f624dc03,e69bc53ed884,system_prompt,Sửa system prompt: bỏ đoán mò và ép 1 bước thêm quy tắc clarify khi thiếu tin guardrail send và no-tool cho câu hỏi ngoài phạm vi,0.65,0.90,runs/v1_B_base_openai_20261110T182118410732.json
+v2,team,tools.yaml,v2+p0cf0f624dc03+t4f6add66fc7a,0cf0f624dc03,4f6add66fc7a,tools.yaml,Viết lại description chi tiết khi nào dùng/không dùng và chuẩn hoá arg conventions trong tools.yaml,0.90,0.95,runs/v2_B_base_openai_20261110T182447817040.json
+v3,team,system_prompt.md,v3+pee422b7f1ee2+t4f6add66fc7a,ee422b7f1ee2,4f6add66fc7a,system_prompt,Bổ sung quy tắc xử lý ngữ cảnh multi-turn và chuyển đổi tool: tuân thủ chỉ dẫn bỏ nguồn cũ,0.95,1.00,runs/v3_B_base_openai_20261110T182639741120.json

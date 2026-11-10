@@ -62,10 +62,10 @@ Lấy từ `starter_v0/artifacts/version_log.csv` và `starter_v0/runs/*.json`. 
 
 | Version | Changed Artifact | Hypothesis | Metric Before | Metric After | Run File |
 |---|---|---|---:|---:|---|
-| v0 | baseline |  |  |  |  |
-| v1 |  |  |  |  |  |
-| v2 |  |  |  |  |  |
-| v3 |  |  |  |  |  |
+| v0 | baseline | Đo hành vi chưa tối ưu trước khi sửa | - | 0.65 | runs/v0_B_base_openai_20261110T174318864886.json |
+| v1 | system_prompt.md | Bỏ đoán mò và ép 1 bước, thêm quy tắc clarify khi thiếu tin, guardrail send, no-tool cho câu hỏi ngoài phạm vi | 0.65 | 0.90 | runs/v1_B_base_openai_20261110T182118410732.json |
+| v2 | tools.yaml | Viết lại description chi tiết khi nào dùng/không dùng và chuẩn hoá arg conventions trong tools.yaml | 0.90 | 0.95 | runs/v2_B_base_openai_20261110T182447817040.json |
+| v3 | system_prompt.md | Bổ sung quy tắc xử lý ngữ cảnh multi-turn và chuyển đổi tool: tuân thủ chỉ dẫn bỏ nguồn cũ | 0.95 | 1.00 | runs/v3_B_base_openai_20261110T182639741120.json |
 
 ### B2. Failure Analysis
 
@@ -73,7 +73,13 @@ Lấy từ `results[*].result.failures` trong run JSON.
 
 | Case ID | Failure Type | Actual Tool Calls | What Failed | Fix |
 |---|---|---|---|---|
-|  |  |  |  |  |
+| R03_web_news_routing | wrong_arg_value | lookup(query='AI news', topic='news') | Thừa từ 'news' trong query khi đã có topic=news | Hướng dẫn convention tách query và topic trong tools.yaml |
+| R08_out_of_scope | out_of_scope | send(text='Nguyên hàm của x^2...') | Tự động gọi send thay vì từ chối/không gọi tool | Bỏ ép buộc 1 tool, thêm rule no-tool cho câu hỏi ngoài phạm vi trong system prompt |
+| R10_missing_handle | missing_info | timeline(screenname='sama') | Tự đoán handle sama thay vì hỏi lại | Bỏ chỉ dẫn đoán mò, bắt buộc gọi clarify(response_type='text') khi thiếu handle |
+| R11_missing_url | missing_info | fetch(url='https://example.com/article') | Tự bịa example.com URL thay vì hỏi lại | Bỏ chỉ dẫn bịa URL, bắt buộc gọi clarify(response_type='text') khi thiếu link |
+| R12_confirm_before_send | wrong_boundary | send(text='Bản tin này...') | Tự ý gửi tin mà chưa có xác nhận của user | Bắt buộc xin xác nhận qua clarify(response_type='yes_no') trước khi gọi send |
+| R13_parallel_web_and_tweets | wrong_arg_value | lookup(query='AI') thiếu topic='news' | Thiếu tham số topic='news' cho tin tức | Mô tả rõ topic=news trong tools.yaml cho nhu cầu tin tức |
+| R14_out_of_scope_coding | out_of_scope | send(text='def fibonacci...') | Tự động gọi send cho yêu cầu viết code | Bỏ ép buộc gọi tool cho task ngoài phạm vi trong system prompt |
 
 ### B3. Team Eval Cases
 
