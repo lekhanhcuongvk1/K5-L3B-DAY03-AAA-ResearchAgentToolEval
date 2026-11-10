@@ -80,6 +80,7 @@
 - Báo cáo nhóm: [`report/team/group_report.md`](group_report.md)
 - Thông tin và phân công nhóm: [`TEAM.md`](../../TEAM.md)
 - Repository nhóm: [K5-L3B-DAY03-AAA-ResearchAgentToolEval](https://github.com/lekhanhcuongvk1/K5-L3B-DAY03-AAA-ResearchAgentToolEval)
+- UI đã deploy: [Research Agent UI trên Streamlit Community Cloud](https://k5-l3b-day03-aaa-researchagenttooleval-hz3tt3gyetsqvhxdkvvjot.streamlit.app/)
 - Commit kỹ thuật: chưa điền SHA; sẽ bổ sung sau khi duyệt diff và commit phần UI, transcript và báo cáo.
 
 ### Công cụ AI đã dùng và cách tự kiểm tra
@@ -92,6 +93,7 @@
   - Chạy `pytest tests/test_ui_safety.py tests/test_tool_contract.py -q` để kiểm tra guardrail UI và contract tool.
   - Dùng Streamlit AppTest để kiểm tra cấu trúc và lỗi render mà không tiêu tốn API credit.
   - Chạy local bằng `streamlit run app.py`, thử compare, chat multi-turn và tải transcript.
+  - Deploy UI lên Streamlit Community Cloud và kiểm tra link public có thể truy cập, sử dụng secrets phía server thay vì commit `.env`.
   - Chạy `git diff --check`, kiểm tra `git status` và rà soát secret trước khi stage/commit.
 
 ## 5. Tự đánh giá
