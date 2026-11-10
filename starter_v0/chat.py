@@ -41,7 +41,16 @@ def trim_history(history: list[dict[str, str]], window: int) -> list[dict[str, s
     return history[-window * 2:]
 
 
-def execute_tool_call(call: ToolCall) -> dict[str, Any]:
+def execute_tool_call(call: ToolCall, *, blocked_tools: set[str] | None = None) -> dict[str, Any]:
+    if blocked_tools and call.name in blocked_tools:
+        return {
+            "tool": call.name,
+            "args": call.args,
+            "result": {
+                "status": "blocked_in_demo",
+                "message": f"{call.name} is disabled in safe demo mode; no external action was performed.",
+            },
+        }
     func = TOOL_FUNCTIONS.get(call.name)
     if not func:
         return {
@@ -84,6 +93,7 @@ def run_model_tool_loop(
     tools: list[dict[str, Any]],
     model: str | None,
     max_tool_rounds: int,
+    blocked_tools: set[str] | None = None,
 ) -> dict[str, Any]:
     working_messages = list(messages)
     rounds: list[dict[str, Any]] = []
@@ -113,7 +123,7 @@ def run_model_tool_loop(
 
         for call in calls:
             print(f"🔧 {call.name}({json.dumps(call.args, ensure_ascii=False, sort_keys=True)})")
-            event = execute_tool_call(call)
+            event = execute_tool_call(call, blocked_tools=blocked_tools)
             round_record["tool_results"].append(event)
             all_tool_events.append(event)
 
