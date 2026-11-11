@@ -15,7 +15,7 @@
 | --: | ------ | ---- | ----- | ------ | ------- |
 |   1 | Lê Khánh Cường | 2A202603999 | 26ai.cuonglk2@vinuni.edu.vn| [lekhanhcuongvk1](https://github.com/lekhanhcuongvk1) | **Nhóm trưởng**; tích hợp repo, UI Streamlit, transcript, hoàn thiện báo cáo, deploy và kiểm tra bài nộp |
 |   2 | Trương Văn Hải | 2A202604018 | truongvanhai866@gmail.com | Chưa xác nhận | CP1–CP2: setup, baseline v0, tối ưu prompt/tool declaration v1–v3, version log và phân tích lỗi |
-|   3 | Phan Nguyễn Phan Anh | 2A202604004 | 26ai.anhpnp@vinuni.edu.vn | Chưa xác nhận | CP3: phát triển `doi_lookup`, tích hợp tool, viết unit test và bằng chứng kiểm thử |
+|   3 | Phan Nguyễn Phan Anh | 2A202604004 | 26ai.anhpnp@vinuni.edu.vn | [alpha19102004](https://github.com/alpha19102004) | CP3: phát triển `doi_lookup`, tích hợp tool, viết unit test và bằng chứng kiểm thử |
 |   4 | Nguyễn Hoàng Ân | 2A202604025 | hoangan061196@gmail.com | Chưa xác nhận | CP4 và bonus: eval nhóm, ba tool bổ sung, regression test `social_search`, tối ưu v4–v7 |
 
 ## Cá nhân
